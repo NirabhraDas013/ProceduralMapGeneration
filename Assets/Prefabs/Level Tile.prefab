@@ -124,62 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5b347b56ccc67047b2e77e22eefdeea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noiseMapGeneration: {fileID: 0}
-  tileMeshRenderer: {fileID: 0}
-  tileMeshFilter: {fileID: 0}
-  tileMeshCollider: {fileID: 0}
-  levelScale: 3
-  heightMultiplier: 3
-  heightCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.40002057
-      value: 0.0001273998
-      inSlope: -0.0148735745
-      outSlope: -0.0148735745
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.03258185
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  terrainTypes:
-  - name: Water
-    height: 0.4
-    color: {r: 0.12629052, g: 0.5577001, b: 0.8113208, a: 1}
-  - name: Grass
-    height: 0.7
-    color: {r: 0.07522435, g: 0.8396226, b: 0.059407253, a: 1}
-  - name: Mountain
-    height: 1
-    color: {r: 0.5943396, g: 0.34550524, b: 0.058873262, a: 1}
-  waves:
-  - seed: 5613
-    frequency: 1
-    amplitude: 1
-  - seed: 9551
-    frequency: 0.5
-    amplitude: 2
-  - seed: 6712
-    frequency: 0.25
-    amplitude: 4
+  noiseMapGeneration: {fileID: 1265008055026945618}
+  tileMeshRenderer: {fileID: 1265008055026945630}
+  tileMeshFilter: {fileID: 1265008055026945629}
+  tileMeshCollider: {fileID: 1265008055026945631}

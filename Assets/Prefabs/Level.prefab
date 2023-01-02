@@ -44,7 +44,133 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fb90edf5ab9b90428d2417995ff0bc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  visualizationMode: 1
   mapWidthInTiles: 10
   mapDepthInTiles: 10
+  centerVertexZ: 55
+  maxDistanceZ: 55
   tilePrefab: {fileID: 1265008055026945624, guid: bc4bc5d90663195469f726eb3924fd05,
     type: 3}
+  levelScale: 3
+  heightMultiplier: 6
+  heightCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.40007797
+      value: 0.0008151531
+      inSlope: -0.009744676
+      outSlope: -0.009744676
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.097179025
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  heatCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.38402572
+      value: 0.5314853
+      inSlope: -0.009744676
+      outSlope: -0.009744676
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.097179025
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.71761644
+      value: 0.86778224
+      inSlope: 1.2489289
+      outSlope: 1.2489289
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.16090097
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -0
+      outSlope: -0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.20943911
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  heightTerrainTypes:
+  - name: Water
+    height: 0.4
+    color: {r: 0.08223567, g: 0.7181662, b: 0.8301887, a: 1}
+  - name: Grass
+    height: 0.7
+    color: {r: 0.18297759, g: 0.6792453, b: 0.03524386, a: 1}
+  - name: Mountain
+    height: 1
+    color: {r: 0.4528302, g: 0.21157889, b: 0.044855822, a: 1}
+  heatTerrainTypes:
+  - name: Hottest
+    height: 0.25
+    color: {r: 0.7830189, g: 0, b: 0, a: 1}
+  - name: Hot
+    height: 0.5
+    color: {r: 0.86589473, g: 0.8679245, b: 0.0040939935, a: 1}
+  - name: Cold
+    height: 0.75
+    color: {r: 0.030037368, g: 0.29325297, b: 0.7075472, a: 1}
+  - name: Cold
+    height: 1
+    color: {r: 0, g: 1, b: 0.95107245, a: 1}
+  - name: Freezing
+    height: 5
+    color: {r: 1, g: 1, b: 1, a: 1}
+  heightWaves:
+  - seed: 5613
+    frequency: 1
+    amplitude: 1
+  - seed: 9551
+    frequency: 0.5
+    amplitude: 2
+  - seed: 6712
+    frequency: 0.25
+    amplitude: 4
+  heatWaves:
+  - seed: 3262
+    frequency: 1
+    amplitude: 1
+  - seed: 6326
+    frequency: 0.5
+    amplitude: 2
+  - seed: 7347
+    frequency: 0.25
+    amplitude: 4
