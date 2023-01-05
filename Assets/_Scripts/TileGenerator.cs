@@ -71,10 +71,30 @@ namespace ProceduralTerrain
                 }
             }
 
+            //Generate a moistureMap using Perlin Noise
+            float[,] moistureMap = noiseMapGeneration.GeneratePerlinNoiseMap(tileDepth, tileWidth, levelGeneratorInstance.LevelScale, offsetX, offsetZ, levelGeneratorInstance.MoistureWaves);
+            for (int zIndex = 0; zIndex < tileDepth; zIndex++)
+            {
+                for (int xIndex = 0; xIndex < tileWidth; xIndex++)
+                {
+                    // makes higher regions dryer, by reducing the height value from the heat map
+                    moistureMap[zIndex, xIndex] -= levelGeneratorInstance.MoistureCurve.Evaluate(heightMap[zIndex, xIndex]) * heightMap[zIndex, xIndex];
+                }
+            }
+
             //Generate a Texture2D from the height Map
-            Texture2D heightTexture = BuildTexture(heightMap, levelGeneratorInstance.HeightTerrainTypes);
+            TerrainType[,] chosenHeightTerrainTypes = new TerrainType[tileDepth, tileWidth];
+            Texture2D heightTexture = BuildTexture(heightMap, levelGeneratorInstance.HeightTerrainTypes, chosenHeightTerrainTypes);
             //Generate a Texture2D from the heat Map
-            Texture2D heatTexture = BuildTexture(heatMap, levelGeneratorInstance.HeatTerrainTypes);
+            TerrainType[,] chosenHeatTerrainTypes = new TerrainType[tileDepth, tileWidth];
+            Texture2D heatTexture = BuildTexture(heatMap, levelGeneratorInstance.HeatTerrainTypes, chosenHeatTerrainTypes);
+            //Generate a Texture2D from the moisture Map
+            TerrainType[,] chosenMoistureTerrainTypes = new TerrainType[tileDepth, tileWidth];
+            Texture2D moistureTexture = BuildTexture(moistureMap, levelGeneratorInstance.MoistureTerrainTypes, chosenMoistureTerrainTypes);
+
+            //Build a biomes Texture2D from the three other noise variables
+            Texture2D biomeTexture = BuildBiomeTexture(chosenHeightTerrainTypes, chosenHeatTerrainTypes, chosenMoistureTerrainTypes);
+
 
             switch (levelGeneratorInstance.VisualizationMode)
             {
@@ -86,6 +106,14 @@ namespace ProceduralTerrain
                     //Set the Level Texture to be Heat Texture
                     tileMeshRenderer.material.mainTexture = heatTexture;
                     break;
+                case VisualizationMode.MOISTURE:
+                    //Set the Level Texture to be Moisture Texture
+                    tileMeshRenderer.material.mainTexture = moistureTexture;
+                    break;
+                case VisualizationMode.BIOME:
+                    //Set the Level Texture to be Biome Texture
+                    tileMeshRenderer.material.mainTexture = biomeTexture;
+                    break;
                 default:
                     break;
             }
@@ -94,7 +122,7 @@ namespace ProceduralTerrain
             UpdateMeshVertices(heightMap);
         }
 
-        private Texture2D BuildTexture(float[,] noiseMap, List<TerrainType> terrainTypes)
+        private Texture2D BuildTexture(float[,] noiseMap, List<TerrainType> terrainTypes, TerrainType[,] chosenTerrainType)
         {
             int tileDepth = noiseMap.GetLength(0);
             int tileWidth = noiseMap.GetLength(1);
@@ -114,6 +142,9 @@ namespace ProceduralTerrain
 
                     //Assign color to visualize height value -- Based on terrain according to height value
                     colorMap[colorIndex] = terrainType.color;
+
+                    //Save the Chose TerrainType
+                    chosenTerrainType[zIndex, xIndex] = terrainType;
                 }
             }
 
@@ -123,6 +154,55 @@ namespace ProceduralTerrain
             tileTexture.SetPixels(colorMap);
             tileTexture.Apply();
 
+            return tileTexture;
+        }
+
+        private Texture2D BuildBiomeTexture(TerrainType[,] heightTerrainTypes, TerrainType[,] heatTerrainTypes, TerrainType[,] moistureTerrainTypes)
+        {
+            int tileDepth = heatTerrainTypes.GetLength(0);
+            int tileWidth = heatTerrainTypes.GetLength(1);
+
+            Color[] colorMap = new Color[tileDepth * tileWidth];
+
+            for (int zIndex = 0; zIndex < tileDepth; zIndex++)
+            {
+                for (int xIndex = 0; xIndex < tileWidth; xIndex++)
+                {
+                    int colorIndex = zIndex * tileWidth + xIndex;
+
+                    TerrainType heightTerrainType = heightTerrainTypes[zIndex, xIndex];
+                    //Check if the current coordinate is a water region
+                    if (!string.Equals(heightTerrainType.name, "Water"))
+                    {
+                        //If the terrain type is not water, it's biome would be defined by it's heat and moisture values
+                        TerrainType heatTerrainType = heatTerrainTypes[zIndex, xIndex];
+                        TerrainType moistureTerrainType = moistureTerrainTypes[zIndex, xIndex];
+
+                        //TerrainType Index is used to Access the biomes table
+                        //The biomes list is a list of a list of biomes. SO there is double listing due to it's dependency on both heat and moisture
+                        if (heatTerrainType.index < 4) //Kind of hack. Heat terrain type has one more index than moisture
+                        {
+                            Biome biome = levelGeneratorInstance.Biomes[moistureTerrainType.index].biomes[heatTerrainType.index];
+                            //Assign Color based on selected biome
+                            colorMap[colorIndex] = biome.color;
+                        }
+
+                        
+                    }
+                    else
+                    {
+                        //Water Regions do not have biomes (Especially viewed from land and for now for the sake of simplicity)
+                        colorMap[colorIndex] = levelGeneratorInstance.WaterColor;
+                    }
+                }
+            }
+
+            // create a new texture and set its pixel colors
+            Texture2D tileTexture = new Texture2D(tileWidth, tileDepth);
+            tileTexture.filterMode = FilterMode.Point;
+            tileTexture.wrapMode = TextureWrapMode.Clamp;
+            tileTexture.SetPixels(colorMap);
+            tileTexture.Apply();
             return tileTexture;
         }
 

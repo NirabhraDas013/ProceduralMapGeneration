@@ -39,6 +39,10 @@ namespace ProceduralTerrain
         private AnimationCurve heatCurve;
         public AnimationCurve HeatCurve { get => heatCurve; }
 
+        [SerializeField]
+        private AnimationCurve moistureCurve;
+        public AnimationCurve MoistureCurve { get => moistureCurve; }
+
         [Space]
         [Header("Terrain Types")]
 
@@ -55,6 +59,17 @@ namespace ProceduralTerrain
         public List<TerrainType> HeatTerrainTypes { get => heatTerrainTypes; }
 
         [Space]
+        [SerializeField]
+        [Tooltip("Set The Terrain Types in order of Moisture. Highest first")]
+        private List<TerrainType> moistureTerrainTypes;
+        public List<TerrainType> MoistureTerrainTypes { get => moistureTerrainTypes; }
+
+        [Space]
+        [SerializeField]
+        private List<BiomeList> biomes;
+        public List<BiomeList> Biomes { get => biomes; }
+
+        [Space]
 
         [SerializeField]
         private List<Wave> heightWaves;
@@ -65,6 +80,17 @@ namespace ProceduralTerrain
         [SerializeField]
         private List<Wave> heatWaves;
         public List<Wave> HeatWaves { get => heatWaves; }
+
+        [Space]
+
+        [SerializeField]
+        private List<Wave> moistureWaves;
+        public List<Wave> MoistureWaves { get => moistureWaves; }
+
+        [Space]
+        [SerializeField]
+        private Color waterColor;
+        public Color WaterColor { get => waterColor; }
 
         private void Awake()
         {

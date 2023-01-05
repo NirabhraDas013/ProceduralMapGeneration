@@ -1,5 +1,7 @@
 public enum VisualizationMode
 {
     HEIGHT,
-    HEAT
+    HEAT,
+    MOISTURE,
+    BIOME
 }
